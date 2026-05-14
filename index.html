@@ -186,6 +186,24 @@
       transform: translateY(-2px);
     }
 
+    .cover-wrap {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cover-img {
+      width: min(260px, 60vw);
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .cover-img:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.4);
+    }
+
     section {
       position: relative;
       z-index: 1;
@@ -337,62 +355,6 @@
       letter-spacing: 0.05em;
     }
 
-    .info-section {
-      background: linear-gradient(180deg, var(--dark2) 0%, var(--dark3) 100%);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-
-    .info-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(201,168,76,0.12);
-      border-radius: 4px;
-      padding: 1.4rem;
-      transition: border-color 0.3s;
-    }
-
-    .info-card:hover { border-color: rgba(201,168,76,0.3); }
-
-    .info-card-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 0.5rem;
-    }
-
-    .info-card-value {
-      font-size: 1rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .platform-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.3rem;
-    }
-
-    .platform-link {
-      display: inline-block;
-      background: rgba(201,168,76,0.1);
-      border: 1px solid rgba(201,168,76,0.25);
-      color: var(--gold);
-      padding: 0.2rem 0.7rem;
-      border-radius: 2px;
-      font-size: 0.82rem;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .platform-link:hover { background: rgba(201,168,76,0.2); }
-
     .sos-section {
       background: linear-gradient(180deg, var(--dark3) 0%, #050403 100%);
     }
@@ -528,28 +490,6 @@
       height: auto;
     }
 
-    .canvas-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      pointer-events: none;
-      opacity: 1;
-      transition: opacity 0.3s;
-    }
-
-    .canvas-placeholder.hidden { opacity: 0; }
-
-    .placeholder-icon {
-      font-size: 2.5rem;
-      opacity: 0.3;
-    }
-
     .sos-actions {
       display: flex;
       gap: 1rem;
@@ -671,6 +611,11 @@
       <a href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener" class="cta-btn">
         อ่านนิยาย ›
       </a>
+      <div class="cover-wrap">
+        <a href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener">
+          <img src="cover.jpg" alt="Tiger's Cage พยัคฆ์กรงวานร" class="cover-img" />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -730,44 +675,6 @@
     </div>
   </section>
 
-  <section class="info-section">
-    <div class="container">
-      <p class="section-label">ข้อมูลนิยาย</p>
-      <h2 class="section-title">Novel Info</h2>
-      <div class="divider"></div>
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="info-card-label">ชื่อเรื่อง</div>
-          <div class="info-card-value">Tiger's Cage พยัคฆ์กรงวานร</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">นามปากกา</div>
-          <div class="info-card-value">takerukung</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">แนวเรื่อง</div>
-          <div class="info-card-value">วายมาเฟีย · เมะxเมะ · ติดเกาะ · Dark Psychology</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">นักวาดปก</div>
-          <div class="info-card-value">Peluna Lala</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">แท็ก</div>
-          <div class="info-card-value">#พยัคฆ์กรงวานร</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">ช่องทางอ่าน</div>
-          <div class="platform-links">
-            <a class="platform-link" href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener">ReadAWrite</a>
-            <span class="platform-link" style="cursor:default;opacity:0.6;">Meb</span>
-            <span class="platform-link" style="cursor:default;opacity:0.6;">ธัญวลัย</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="sos-section">
     <div class="container">
       <p class="section-label">กิจกรรม</p>
@@ -808,10 +715,6 @@
         </div>
         <div class="canvas-container">
           <canvas id="sosCanvas"></canvas>
-          <div class="canvas-placeholder" id="canvasPlaceholder">
-            <span class="placeholder-icon">🌴</span>
-            <span>พิมพ์ข้อความแล้วกด "สร้างการ์ด SOS"</span>
-          </div>
         </div>
         <div class="sos-actions">
           <button class="sos-download-btn" id="downloadBtn" disabled onclick="downloadCard()">
@@ -856,10 +759,10 @@
 
     const canvas = document.getElementById('sosCanvas');
     const ctx = canvas.getContext('2d');
-    const placeholder = document.getElementById('canvasPlaceholder');
     const downloadBtn = document.getElementById('downloadBtn');
 
     const cardImg = new Image();
+    cardImg.onload = () => drawCard('');
     cardImg.src = 'card.jpg';
 
     function generateCard() {
@@ -876,26 +779,30 @@
       canvas.width  = cardImg.naturalWidth;
       canvas.height = cardImg.naturalHeight;
       ctx.drawImage(cardImg, 0, 0);
+      if (!text) return;
+
       const w = canvas.width;
       const h = canvas.height;
-      const fontSize = Math.max(28, Math.round(w * 0.048));
-      ctx.font = `bold ${fontSize}px 'Sarabun', sans-serif`;
+
+      const labSize = Math.max(18, Math.round(w * 0.032));
+      ctx.font = `${labSize}px 'Cinzel', serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.shadowColor = 'rgba(0,0,0,0.85)';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = 'rgba(201,168,76,0.95)';
+      ctx.fillText('S · O · S', w / 2, h * 0.46);
+
+      const fontSize = Math.max(28, Math.round(w * 0.048));
+      ctx.font = `bold ${fontSize}px 'Sarabun', sans-serif`;
       ctx.shadowBlur  = 18;
       ctx.lineWidth   = fontSize * 0.15;
       ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-      ctx.strokeText(text, w / 2, h * 0.78);
+      ctx.strokeText(text, w / 2, h * 0.54);
       ctx.fillStyle = '#f5e9c4';
-      ctx.fillText(text, w / 2, h * 0.78);
-      const labSize = Math.max(18, Math.round(w * 0.03));
-      ctx.font = `${labSize}px 'Cinzel', serif`;
-      ctx.fillStyle = 'rgba(201,168,76,0.9)';
-      ctx.shadowBlur = 10;
-      ctx.fillText('S · O · S', w / 2, h * 0.72);
+      ctx.fillText(text, w / 2, h * 0.54);
+
       ctx.shadowBlur = 0;
-      placeholder.classList.add('hidden');
       downloadBtn.disabled = false;
     }
 
