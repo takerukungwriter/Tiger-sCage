@@ -1009,26 +1009,71 @@
       tctx.textBaseline = 'middle';
       tctx.lineJoin = 'round';
 
-      tctx.fillStyle = 'black';
-      tctx.fillText(text, x, y);
-
-      tctx.globalCompositeOperation = 'source-in';
+      // ระบบตัดบรรทัดอัตโนมัติ (Text Wrapping)
+      const maxWidth = canvasW * 0.85; // จำกัดกว้างสุดที่ 85% ของรูป
+      let words = [];
       
+      // ใช้ Segmenter ตัดคำไทย (ถ้าเบราว์เซอร์รองรับ)
+      if (window.Intl && Intl.Segmenter) {
+        const segmenter = new Intl.Segmenter('th-TH', { granularity: 'word' });
+        words = Array.from(segmenter.segment(text)).map(s => s.segment);
+      } else {
+        words = text.split(' ');
+        if (words.length === 1) words = text.split('');
+      }
+
+      const lines = [];
+      let currentLine = '';
+
+      for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        let testLine = currentLine + word;
+        let metrics = tctx.measureText(testLine);
+
+        if (metrics.width > maxWidth && currentLine.trim().length > 0) {
+          lines.push(currentLine.trim());
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      if (currentLine.trim()) {
+        lines.push(currentLine.trim());
+      }
+
+      // คำนวณความสูงและจุดศูนย์กลางในแนวตั้งของข้อความ
+      const lineHeight = fontSize * 1.3;
+      const totalHeight = lines.length * lineHeight;
+      const startY = y - (totalHeight / 2) + (lineHeight / 2);
+
+      // 1. วาดตัวหนังสือสีดำ
+      tctx.fillStyle = 'black';
+      lines.forEach((line, index) => {
+        tctx.fillText(line, x, startY + (index * lineHeight));
+      });
+
+      // 2. เจาะทะลุสีใส (source-in)
+      tctx.globalCompositeOperation = 'source-in';
       tctx.fillStyle = 'rgba(15, 5, 0, 0.25)';
       tctx.fillRect(0, 0, canvasW, canvasH);
 
+      // 3. วาดแสงและเงาหลุมทราย (source-atop)
       tctx.globalCompositeOperation = 'source-atop';
-      
       const strokeWidth = fontSize * 0.08;
       const offset = fontSize * 0.025;
       tctx.lineWidth = strokeWidth;
 
-      tctx.strokeStyle = 'rgba(15, 5, 0, 0.85)';
-      tctx.strokeText(text, x - offset, y - offset);
+      lines.forEach((line, index) => {
+        const lineY = startY + (index * lineHeight);
+        
+        tctx.strokeStyle = 'rgba(15, 5, 0, 0.85)';
+        tctx.strokeText(line, x - offset, lineY - offset);
 
-      tctx.strokeStyle = 'rgba(255, 240, 200, 0.7)';
-      tctx.strokeText(text, x + offset, y + offset);
+        tctx.strokeStyle = 'rgba(255, 240, 200, 0.7)';
+        tctx.strokeText(line, x + offset, lineY + offset);
+      });
 
+      // 4. วาดลง Canvas จริง
       ctx.drawImage(tempCanvas, 0, 0);
     }
 
