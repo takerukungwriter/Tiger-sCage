@@ -7,7 +7,7 @@
   <meta name="description" content="Tiger's Cage พยัคฆ์กรงวานร นิยายวายมาเฟีย เมะxเมะ ติดเกาะ Dark Psychology โดย takerukung" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel:wght@400;700;900&family=Sarabun:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel:wght@400;700;900&family=Kanit:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --gold: #c9a84c;
@@ -30,7 +30,7 @@
     body {
       background-color: var(--dark);
       color: var(--text);
-      font-family: 'Sarabun', sans-serif;
+      font-family: 'Kanit', sans-serif;
       overflow-x: hidden;
     }
 
@@ -104,7 +104,7 @@
     }
 
     .hero-subtitle {
-      font-family: 'Sarabun', sans-serif;
+      font-family: 'Kanit', sans-serif;
       font-size: clamp(1.1rem, 3vw, 1.5rem);
       color: var(--text-muted);
       margin-top: 0.5rem;
@@ -435,7 +435,7 @@
       border-radius: 2px;
       padding: 0.75rem 1rem;
       color: var(--text);
-      font-family: 'Sarabun', sans-serif;
+      font-family: 'Kanit', sans-serif;
       font-size: 1rem;
       outline: none;
       transition: border-color 0.2s;
@@ -730,7 +730,6 @@
               placeholder="เช่น: ช่วยด้วย! ติดเกาะกับมาเฟีย อย่าทิ้งฉัน!"
               autocomplete="off"
             />
-            <button class="sos-generate-btn" onclick="generateCard()">สร้างการ์ด SOS</button>
           </div>
           <div class="char-count" id="charCount">0 / 60</div>
         </div>
@@ -745,6 +744,7 @@
             autocomplete="off"
           />
         </div>
+        <button class="sos-generate-btn" onclick="generateCard()" style="width: 100%; margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 0.95rem;">สร้างการ์ด SOS</button>
         <div class="canvas-container" id="canvasContainer">
           <canvas id="sosCanvas"></canvas>
           <div class="canvas-save-hint">⬇ คลิกที่รูปเพื่อบันทึก</div>
@@ -877,7 +877,7 @@
       const nameY = h * 0.61;
 
       // Main SOS message — sand writing style
-      const fontSize = Math.max(30, Math.round(w * 0.052));
+      const fontSize = Math.max(39, Math.round(w * 0.0676));
       drawSandText(text, w / 2, mainY, fontSize, "'Charm', cursive");
 
       // Name — smaller, italic Playfair Display
