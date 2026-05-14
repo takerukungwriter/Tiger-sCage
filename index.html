@@ -376,6 +376,17 @@
     }
 
     .sos-announcement strong { color: #ff9999; }
+    
+    /* สไตล์สำหรับรูปของรางวัล */
+    .prize-img {
+      max-width: 100%;
+      width: min(400px, 90vw);
+      height: auto;
+      margin-top: 1.2rem;
+      border-radius: 4px;
+      border: 1px solid rgba(201,168,76,0.3);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
 
     .sos-wrapper { max-width: 700px; margin: 0 auto; }
 
@@ -756,11 +767,12 @@
       <div class="divider"></div>
       <div class="sos-announcement">
         <p>
-          🏝️ <strong>ลุ้น Ebook ฟรี 3 รางวัล!</strong><br />
+          🏝️ <strong>ลุ้น Ebook 3 รางวัล และ Griptok 5 รางวัล!</strong><br />
           ถ้าคุณติดเกาะ คุณจะส่ง SOS ว่าอะไร? เขียนข้อความสั้น ๆ บนผืนทราย<br />
-          นำภาพไปคอมเมนต์ในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong> ของนิยาย <strong>พยัคฆ์กรงวานร บน ReadAWrite</strong><br />
+          นำภาพไปคอมเมนต์ในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้"</strong> ของนิยาย <strong>พยัคฆ์กรงวานร บน ReadAWrite</strong><br />
           ประกาศผลผู้โชคดี <strong>20 พฤษภาคม นี้</strong>
         </p>
+        <img src="prize.png" alt="ของรางวัลกิจกรรม" class="prize-img" />
       </div>
       <div class="sos-wrapper">
         <div class="sos-rules">
@@ -773,7 +785,6 @@
           </ul>
         </div>
         
-        <!-- ปรับเปลี่ยน: เพิ่มปุ่มสุ่มคำ ไว้ข้างๆ label -->
         <div class="sos-input-area">
           <div class="sos-label-row">
             <label class="sos-label" for="sosText" style="margin-bottom: 0;">✍️ เขียนข้อความ SOS ของคุณ</label>
@@ -824,7 +835,7 @@
 
         <div class="submit-guide">
           <p>
-            หลังดาวน์โหลดแล้ว ให้ไปคอมเมนต์ภาพในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong><br />
+            หลังดาวน์โหลดแล้ว ให้ไปคอมเมนต์ภาพในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้"</strong><br />
             ของนิยาย <strong>พยัคฆ์กรงวานร</strong> บน ReadAWrite<br />
             <a href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener">
               › คลิกเพื่อไปที่นิยายบน ReadAWrite
@@ -851,7 +862,6 @@
     const charCount = document.getElementById('charCount');
     const canvasContainer = document.getElementById('canvasContainer');
 
-    // รายการคำสุ่ม
     const randomPhrases = [
       "Help! โดนหมาเด็กตก",
       "SOS แซ่บร้องขอชีวิต",
@@ -868,17 +878,14 @@
       "กรี๊ดดดดดดดด"
     ];
 
-    // ฟังก์ชันสุ่มคำ
     function randomSOS() {
       const randomIndex = Math.floor(Math.random() * randomPhrases.length);
       sosInput.value = randomPhrases[randomIndex];
       
-      // อัปเดตตัวนับตัวอักษร
       const len = sosInput.value.length;
       charCount.textContent = `${len} / 60`;
       charCount.classList.toggle('warn', len > 48);
       
-      // วาดการ์ดให้เห็นผลลัพธ์ทันที
       generateCard();
     }
 
