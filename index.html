@@ -566,7 +566,7 @@
       padding: 0.65rem 1rem;
       border-radius: 2px;
       font-family: 'Kanit', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -575,12 +575,6 @@
     }
 
     .sos-share-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-
-    .sos-share-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-
-    .sos-share-btn.fb  { background: #1877f2; color: #fff; }
-    .sos-share-btn.x   { background: #000; color: #fff; border: 1px solid #333; }
-    .sos-share-btn.native { background: rgba(201,168,76,0.15); border: 1px solid var(--gold-dim); color: var(--gold-light); }
 
     .submit-guide {
       margin-top: 2rem;
@@ -777,7 +771,9 @@
             autocomplete="off"
           />
         </div>
-        <button class="sos-generate-btn" onclick="generateCard()" style="width: 100%; margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 0.95rem;">สร้างการ์ด SOS</button>
+        
+        <button class="sos-generate-btn" onclick="generateCard()" style="width: 100%; margin-top: 1rem; margin-bottom: 1.5rem; padding: 0.9rem 1.5rem; font-size: 0.95rem;">สร้างการ์ด SOS</button>
+        
         <div class="canvas-container" id="canvasContainer">
           <canvas id="sosCanvas"></canvas>
           <div class="canvas-save-hint">⬇ คลิกที่รูปเพื่อบันทึก</div>
@@ -788,19 +784,9 @@
           </button>
         </div>
         <div class="sos-share-section" id="shareSection">
-          <a id="fbShareBtn" class="sos-share-btn fb" href="#" target="_blank" rel="noopener" aria-disabled="true"
-            style="pointer-events:none; opacity:0.3;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
-            แชร์ Facebook
+          <a id="goToActivityBtn" class="sos-share-btn" href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener" style="width: 100%; display: none; background: linear-gradient(135deg, #c9a84c, #8b6914); color: #0a0805;">
+            ไปแชร์รูปที่หน้ากิจกรรม
           </a>
-          <a id="xShareBtn" class="sos-share-btn x" href="#" target="_blank" rel="noopener" aria-disabled="true"
-            style="pointer-events:none; opacity:0.3;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            แชร์ X
-          </a>
-          <button id="nativeShareBtn" class="sos-share-btn native" disabled onclick="nativeShare()" style="display:none;">
-            &#8679; แชร์ภาพ
-          </button>
         </div>
         <div class="submit-guide">
           <p>
@@ -848,44 +834,14 @@
     const canvas = document.getElementById('sosCanvas');
     const ctx = canvas.getContext('2d');
     const downloadBtn = document.getElementById('downloadBtn');
-
-    const ACTIVITY_URL = 'https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b';
-    const fbShareBtn     = document.getElementById('fbShareBtn');
-    const xShareBtn      = document.getElementById('xShareBtn');
-    const nativeShareBtn = document.getElementById('nativeShareBtn');
-
-    if (navigator.canShare) nativeShareBtn.style.display = 'flex';
+    const goToActivityBtn = document.getElementById('goToActivityBtn');
 
     function enableShareButtons(enable) {
-      const shareText = encodeURIComponent('ส่ง SOS ให้โลกรู้ 🏝️ ร่วมกิจกรรมลุ้น Ebook ฟรีกับนิยาย พยัคฆ์กรงวานร #พยัคฆ์กรงวานร');
-      const encodedURL = encodeURIComponent(ACTIVITY_URL);
       if (enable) {
-        fbShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}&hashtag=%23%E0%B8%9E%E0%B8%A2%E0%B8%B1%E0%B8%84%E0%B8%86%E0%B9%8C%E0%B8%81%E0%B8%A3%E0%B8%87%E0%B8%A7%E0%B8%B2%E0%B8%99%E0%B8%A3`;
-        fbShareBtn.style.pointerEvents = '';
-        fbShareBtn.style.opacity = '';
-        xShareBtn.href  = `https://x.com/intent/tweet?url=${encodedURL}&text=${shareText}`;
-        xShareBtn.style.pointerEvents = '';
-        xShareBtn.style.opacity = '';
-        nativeShareBtn.disabled = false;
+        goToActivityBtn.style.display = 'flex';
       } else {
-        fbShareBtn.href = '#';
-        fbShareBtn.style.pointerEvents = 'none';
-        fbShareBtn.style.opacity = '0.3';
-        xShareBtn.href  = '#';
-        xShareBtn.style.pointerEvents = 'none';
-        xShareBtn.style.opacity = '0.3';
-        nativeShareBtn.disabled = true;
+        goToActivityBtn.style.display = 'none';
       }
-    }
-
-    async function nativeShare() {
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], 'SOS_TigersCage.png', { type: 'image/png' });
-        const payload = navigator.canShare({ files: [file] })
-          ? { files: [file], title: 'SOS พยัคฆ์กรงวานร', text: 'ส่ง SOS ให้โลกรู้ 🏝️ #พยัคฆ์กรงวานร', url: ACTIVITY_URL }
-          : { title: 'SOS พยัคฆ์กรงวานร', text: 'ส่ง SOS ให้โลกรู้ 🏝️ #พยัคฆ์กรงวานร', url: ACTIVITY_URL };
-        try { await navigator.share(payload); } catch (_) {}
-      }, 'image/png');
     }
 
     canvas.addEventListener('click', () => {
@@ -907,47 +863,54 @@
       drawCard(text, name);
     }
 
-    function drawSandText(text, x, y, fontSize, fontFamily) {
-      ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+    // ฟังก์ชันวาดตัวหนังสือบุ๋มลงทรายแบบเจาะทะลุ (Transparent Masking)
+    function drawSandText(text, x, y, fontSize, canvasW, canvasH) {
+      // สร้างผืนผ้าใบจำลอง (Off-screen Canvas) เพื่อทำ Mask
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvasW;
+      tempCanvas.height = canvasH;
+      const tctx = tempCanvas.getContext('2d');
 
-      // Layer 1: deep groove shadow (dark, offset)
-      ctx.shadowColor = 'rgba(35, 18, 3, 0.95)';
-      ctx.shadowBlur = 10;
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 3;
-      ctx.fillStyle = 'rgba(65, 40, 8, 0.85)';
-      ctx.fillText(text, x + 2, y + 3);
+      tctx.font = `700 ${fontSize}px 'Kanit', sans-serif`;
+      tctx.textAlign = 'center';
+      tctx.textBaseline = 'middle';
+      tctx.lineJoin = 'round';
 
-      // Layer 2: mid groove
-      ctx.shadowColor = 'rgba(30, 15, 3, 0.7)';
-      ctx.shadowBlur = 5;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 1.5;
-      ctx.fillStyle = '#c8a050';
-      ctx.fillText(text, x, y);
+      // 1. วาดตัวหนังสือเป็นสีดำสนิท เพื่อใช้เป็นกรอบแม่พิมพ์
+      tctx.fillStyle = 'black';
+      tctx.fillText(text, x, y);
 
-      // Layer 3: sandy surface (main color)
-      ctx.shadowBlur = 3;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-      ctx.fillStyle = '#f0d888';
-      ctx.fillText(text, x, y);
+      // 2. ใช้ source-in เพื่อให้การระบายสีหลังจากนี้ "อยู่เฉพาะในตัวหนังสือ" เท่านั้น
+      tctx.globalCompositeOperation = 'source-in';
+      
+      // ถมพื้นตัวหนังสือด้วยสีน้ำตาลดำโปร่งใส (เพื่อให้พื้นทรายเดิมดูชื้นและลึกลงไป)
+      tctx.fillStyle = 'rgba(15, 5, 0, 0.25)';
+      tctx.fillRect(0, 0, canvasW, canvasH);
 
-      // Layer 4: highlight gleam (top-left edge)
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-      ctx.globalAlpha = 0.22;
-      ctx.fillStyle = '#fff8d8';
-      ctx.fillText(text, x - 0.6, y - 0.8);
-      ctx.globalAlpha = 1;
+      // 3. ใช้ source-atop เพื่อวาดแสงเงา "ทับลงบน" สีโปร่งใสด้านบน โดยไม่ให้ทะลักออกนอกกรอบแม่พิมพ์
+      tctx.globalCompositeOperation = 'source-atop';
+      
+      // คำนวณความหนาและระยะเยื้องของแสงเงาให้สัมพันธ์กับขนาดฟอนต์
+      const strokeWidth = fontSize * 0.08;
+      const offset = fontSize * 0.025;
+      tctx.lineWidth = strokeWidth;
+
+      // วาดร่องเงาลึก (มุมบนซ้าย)
+      tctx.strokeStyle = 'rgba(15, 5, 0, 0.85)';
+      tctx.strokeText(text, x - offset, y - offset);
+
+      // วาดร่องแสงตกกระทบ (มุมล่างขวา)
+      tctx.strokeStyle = 'rgba(255, 240, 200, 0.7)';
+      tctx.strokeText(text, x + offset, y + offset);
+
+      // 4. นำภาพทั้งหมดที่เจาะและทำเงาเสร็จแล้ว มาวางแปะทับรูปลงบนผืนผ้าใบจริง
+      ctx.drawImage(tempCanvas, 0, 0);
     }
 
     function drawCard(text, name) {
       canvas.width  = cardImg.naturalWidth;
       canvas.height = cardImg.naturalHeight;
+      // วาดพื้นหลังทราย
       ctx.drawImage(cardImg, 0, 0);
 
       if (!text) {
@@ -962,35 +925,18 @@
 
       const hasName = name && name.length > 0;
       const mainY = hasName ? h * 0.48 : h * 0.52;
-      const nameY = h * 0.61;
+      const nameY = h * 0.64;
 
-      // Main SOS message — sand writing style
-      const fontSize = Math.max(39, Math.round(w * 0.0676));
-      drawSandText(text, w / 2, mainY, fontSize, "'Charm', cursive");
+      // ขยายขนาดตัวหนังสือขึ้น 50% (* 1.5)
+      const fontSize = Math.max(39, Math.round(w * 0.0676)) * 1.5;
+      
+      // เรียกฟังก์ชันวาดตัวหนังสือหลัก
+      drawSandText(text, w / 2, mainY, fontSize, w, h);
 
-      // Name — smaller, italic Playfair Display
       if (hasName) {
-        const nameFontSize = Math.max(16, Math.round(fontSize * 0.50));
-        ctx.font = `italic ${nameFontSize}px 'Playfair Display', serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        ctx.shadowColor = 'rgba(35, 18, 3, 0.85)';
-        ctx.shadowBlur = 7;
-        ctx.shadowOffsetX = 1;
-        ctx.shadowOffsetY = 2;
-        ctx.fillStyle = 'rgba(65, 40, 8, 0.8)';
-        ctx.fillText(`ผู้ติดเกาะ : ${name}`, w / 2 + 1, nameY + 2);
-
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 1;
-        ctx.fillStyle = '#d9b860';
-        ctx.fillText(`ผู้ติดเกาะ : ${name}`, w / 2, nameY);
-
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
+        // ขยายขนาดชื่อขึ้น 50% (* 1.5)
+        const nameFontSize = Math.max(16, Math.round(w * 0.0338)) * 1.5;
+        drawSandText(`ผู้ติดเกาะ : ${name}`, w / 2, nameY, nameFontSize, w, h);
       }
 
       downloadBtn.disabled = false;
