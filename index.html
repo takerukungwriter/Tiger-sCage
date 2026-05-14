@@ -7,7 +7,7 @@
   <meta name="description" content="Tiger's Cage พยัคฆ์กรงวานร นิยายวายมาเฟีย เมะxเมะ ติดเกาะ Dark Psychology โดย takerukung" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Sarabun:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel:wght@400;700;900&family=Sarabun:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --gold: #c9a84c;
@@ -482,6 +482,27 @@
       border-radius: 4px;
       overflow: hidden;
       background: #000;
+      cursor: pointer;
+    }
+
+    .canvas-container .canvas-save-hint {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.6);
+      color: var(--gold-light);
+      text-align: center;
+      padding: 0.5rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+
+    .canvas-container.has-content:hover .canvas-save-hint {
+      opacity: 1;
     }
 
     #sosCanvas {
@@ -684,7 +705,7 @@
         <p>
           🏝️ <strong>ลุ้น Ebook ฟรี 3 รางวัล!</strong><br />
           ถ้าคุณติดเกาะ คุณจะส่ง SOS ว่าอะไร? เขียนข้อความสั้น ๆ บนผืนทราย<br />
-          นำภาพที่ได้ไปโพสต์ใน <strong>ช่อง comment บท "กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong><br />
+          นำภาพไปคอมเมนต์ในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong> ของนิยาย <strong>พยัคฆ์กรงวานร บน ReadAWrite</strong><br />
           ประกาศผลผู้โชคดี <strong>20 พฤษภาคม นี้</strong>
         </p>
       </div>
@@ -694,7 +715,7 @@
           <ul>
             <li>เขียนข้อความ SOS สั้น ๆ (ไม่เกิน 60 ตัวอักษร) ว่าถ้าติดเกาะจะส่งสัญญาณอะไร</li>
             <li>กด "สร้างการ์ด SOS" เพื่อใส่ข้อความลงบนภาพ</li>
-            <li>ดาวน์โหลดภาพแล้วนำไปแปะใน comment บทกิจกรรม</li>
+            <li>ดาวน์โหลดภาพ แล้วคอมเมนต์ในบท "กิจกรรมส่ง SOS ฯ" ของนิยายพยัคฆ์กรงวานร บน ReadAWrite</li>
             <li>1 คน : 1 สิทธิ์ · ประกาศผล 20 พฤษภาคม</li>
           </ul>
         </div>
@@ -713,8 +734,20 @@
           </div>
           <div class="char-count" id="charCount">0 / 60</div>
         </div>
-        <div class="canvas-container">
+        <div class="sos-input-area" style="margin-top: 0.8rem;">
+          <label class="sos-label" for="sosName">🏝️ ชื่อผู้ติดเกาะ (ไม่บังคับ)</label>
+          <input
+            id="sosName"
+            class="sos-input"
+            type="text"
+            maxlength="30"
+            placeholder="เช่น: ซาน · แดน"
+            autocomplete="off"
+          />
+        </div>
+        <div class="canvas-container" id="canvasContainer">
           <canvas id="sosCanvas"></canvas>
+          <div class="canvas-save-hint">⬇ คลิกที่รูปเพื่อบันทึก</div>
         </div>
         <div class="sos-actions">
           <button class="sos-download-btn" id="downloadBtn" disabled onclick="downloadCard()">
@@ -723,7 +756,8 @@
         </div>
         <div class="submit-guide">
           <p>
-            หลังดาวน์โหลดแล้ว นำภาพไปโพสต์ใน comment บทกิจกรรม<br />
+            หลังดาวน์โหลดแล้ว ให้ไปคอมเมนต์ภาพในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong><br />
+            ของนิยาย <strong>พยัคฆ์กรงวานร</strong> บน ReadAWrite<br />
             <a href="https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b" target="_blank" rel="noopener">
               › คลิกเพื่อไปที่นิยายบน ReadAWrite
             </a>
@@ -745,7 +779,9 @@
 
   <script>
     const sosInput = document.getElementById('sosText');
+    const sosName  = document.getElementById('sosName');
     const charCount = document.getElementById('charCount');
+    const canvasContainer = document.getElementById('canvasContainer');
 
     sosInput.addEventListener('input', () => {
       const len = sosInput.value.length;
@@ -761,49 +797,112 @@
     const ctx = canvas.getContext('2d');
     const downloadBtn = document.getElementById('downloadBtn');
 
+    canvas.addEventListener('click', () => {
+      if (!downloadBtn.disabled) downloadCard();
+    });
+
     const cardImg = new Image();
-    cardImg.onload = () => drawCard('');
+    cardImg.onload = () => drawCard('', '');
     cardImg.src = 'card.jpg';
 
     function generateCard() {
       const text = sosInput.value.trim();
+      const name = sosName.value.trim();
       if (!text) { sosInput.focus(); return; }
       if (!cardImg.complete || cardImg.naturalWidth === 0) {
-        cardImg.onload = () => drawCard(text);
+        cardImg.onload = () => drawCard(text, name);
         return;
       }
-      drawCard(text);
+      drawCard(text, name);
     }
 
-    function drawCard(text) {
+    function drawSandText(text, x, y, fontSize, fontFamily) {
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // Layer 1: deep groove shadow (dark, offset)
+      ctx.shadowColor = 'rgba(35, 18, 3, 0.95)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 3;
+      ctx.fillStyle = 'rgba(65, 40, 8, 0.85)';
+      ctx.fillText(text, x + 2, y + 3);
+
+      // Layer 2: mid groove
+      ctx.shadowColor = 'rgba(30, 15, 3, 0.7)';
+      ctx.shadowBlur = 5;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 1.5;
+      ctx.fillStyle = '#c8a050';
+      ctx.fillText(text, x, y);
+
+      // Layer 3: sandy surface (main color)
+      ctx.shadowBlur = 3;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.fillStyle = '#f0d888';
+      ctx.fillText(text, x, y);
+
+      // Layer 4: highlight gleam (top-left edge)
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = '#fff8d8';
+      ctx.fillText(text, x - 0.6, y - 0.8);
+      ctx.globalAlpha = 1;
+    }
+
+    function drawCard(text, name) {
       canvas.width  = cardImg.naturalWidth;
       canvas.height = cardImg.naturalHeight;
       ctx.drawImage(cardImg, 0, 0);
-      if (!text) return;
+
+      if (!text) {
+        downloadBtn.disabled = true;
+        canvasContainer.classList.remove('has-content');
+        return;
+      }
 
       const w = canvas.width;
       const h = canvas.height;
 
-      const labSize = Math.max(18, Math.round(w * 0.032));
-      ctx.font = `${labSize}px 'Cinzel', serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(0,0,0,0.85)';
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = 'rgba(201,168,76,0.95)';
-      ctx.fillText('S · O · S', w / 2, h * 0.46);
+      const hasName = name && name.length > 0;
+      const mainY = hasName ? h * 0.48 : h * 0.52;
+      const nameY = h * 0.61;
 
-      const fontSize = Math.max(28, Math.round(w * 0.048));
-      ctx.font = `bold ${fontSize}px 'Sarabun', sans-serif`;
-      ctx.shadowBlur  = 18;
-      ctx.lineWidth   = fontSize * 0.15;
-      ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-      ctx.strokeText(text, w / 2, h * 0.54);
-      ctx.fillStyle = '#f5e9c4';
-      ctx.fillText(text, w / 2, h * 0.54);
+      // Main SOS message — sand writing style
+      const fontSize = Math.max(30, Math.round(w * 0.052));
+      drawSandText(text, w / 2, mainY, fontSize, "'Charm', cursive");
 
-      ctx.shadowBlur = 0;
+      // Name — smaller, italic Playfair Display
+      if (hasName) {
+        const nameFontSize = Math.max(16, Math.round(fontSize * 0.50));
+        ctx.font = `italic ${nameFontSize}px 'Playfair Display', serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.shadowColor = 'rgba(35, 18, 3, 0.85)';
+        ctx.shadowBlur = 7;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = 'rgba(65, 40, 8, 0.8)';
+        ctx.fillText(`— ${name}`, w / 2 + 1, nameY + 2);
+
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 1;
+        ctx.fillStyle = '#d9b860';
+        ctx.fillText(`— ${name}`, w / 2, nameY);
+
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+      }
+
       downloadBtn.disabled = false;
+      canvasContainer.classList.add('has-content');
     }
 
     function downloadCard() {
