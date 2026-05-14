@@ -418,12 +418,38 @@
 
     .sos-input-area { margin-bottom: 1.5rem; }
 
+    .sos-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
     .sos-label {
       display: block;
       font-size: 0.85rem;
       color: var(--text-muted);
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+    }
+
+    .random-btn {
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .random-btn:hover {
+      background: rgba(201,168,76,0.25);
+      border-color: var(--gold);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
     .sos-input-row { display: flex; gap: 0.8rem; }
@@ -746,8 +772,13 @@
             <li>1 คน : 1 สิทธิ์ · ประกาศผล 20 พฤษภาคม</li>
           </ul>
         </div>
+        
+        <!-- ปรับเปลี่ยน: เพิ่มปุ่มสุ่มคำ ไว้ข้างๆ label -->
         <div class="sos-input-area">
-          <label class="sos-label" for="sosText">✍️ เขียนข้อความ SOS ของคุณ</label>
+          <div class="sos-label-row">
+            <label class="sos-label" for="sosText" style="margin-bottom: 0;">✍️ เขียนข้อความ SOS ของคุณ</label>
+            <button type="button" class="random-btn" onclick="randomSOS()">🎲 สุ่มคำ</button>
+          </div>
           <div class="sos-input-row">
             <input
               id="sosText"
@@ -760,6 +791,7 @@
           </div>
           <div class="char-count" id="charCount">0 / 60</div>
         </div>
+        
         <div class="sos-input-area" style="margin-top: 0.8rem;">
           <label class="sos-label" for="sosName">🏝️ ชื่อผู้ติดเกาะ (ไม่บังคับ)</label>
           <input
@@ -818,6 +850,37 @@
     const sosName  = document.getElementById('sosName');
     const charCount = document.getElementById('charCount');
     const canvasContainer = document.getElementById('canvasContainer');
+
+    // รายการคำสุ่ม
+    const randomPhrases = [
+      "Help! โดนหมาเด็กตก",
+      "SOS แซ่บร้องขอชีวิต",
+      "ไม่ติดเกาะแต่ติดใจ",
+      "หาคนจุดไฟให้",
+      "เกาะนี้มีคนโสด",
+      "หาคนติดเกาะด้วย",
+      "คนแซ่บติดเกาะอยู่",
+      "อยากขึ้นเรือกับเธอ",
+      "อยู่เกาะกับผู้",
+      "เกาะนี้มีตัวแม่",
+      "เกาะแน่น ๆ นะเตงเบ้บ",
+      "ช่วยด้วย หนูเสว",
+      "กรี๊ดดดดดดดด"
+    ];
+
+    // ฟังก์ชันสุ่มคำ
+    function randomSOS() {
+      const randomIndex = Math.floor(Math.random() * randomPhrases.length);
+      sosInput.value = randomPhrases[randomIndex];
+      
+      // อัปเดตตัวนับตัวอักษร
+      const len = sosInput.value.length;
+      charCount.textContent = `${len} / 60`;
+      charCount.classList.toggle('warn', len > 48);
+      
+      // วาดการ์ดให้เห็นผลลัพธ์ทันที
+      generateCard();
+    }
 
     sosInput.addEventListener('input', () => {
       const len = sosInput.value.length;
