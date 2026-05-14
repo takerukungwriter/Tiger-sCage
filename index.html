@@ -860,7 +860,7 @@
       const shareText = encodeURIComponent('ส่ง SOS ให้โลกรู้ 🏝️ ร่วมกิจกรรมลุ้น Ebook ฟรีกับนิยาย พยัคฆ์กรงวานร #พยัคฆ์กรงวานร');
       const encodedURL = encodeURIComponent(ACTIVITY_URL);
       if (enable) {
-        fbShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`;
+        fbShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}&hashtag=%23%E0%B8%9E%E0%B8%A2%E0%B8%B1%E0%B8%84%E0%B8%86%E0%B9%8C%E0%B8%81%E0%B8%A3%E0%B8%87%E0%B8%A7%E0%B8%B2%E0%B8%99%E0%B8%A3`;
         fbShareBtn.style.pointerEvents = '';
         fbShareBtn.style.opacity = '';
         xShareBtn.href  = `https://x.com/intent/tweet?url=${encodedURL}&text=${shareText}`;
