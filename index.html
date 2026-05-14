@@ -278,6 +278,31 @@
       white-space: pre-line;
     }
 
+    /* Video Wrapper */
+    .video-wrapper {
+      max-width: 720px;
+      margin: 3rem auto 0;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
     .characters-section { background: var(--dark2); }
 
     .characters-grid {
@@ -726,6 +751,21 @@
 ใช่ไหม?</p>
         </div>
       </div>
+      
+      <!-- Video Section -->
+      <div class="video-wrapper">
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/I8-6EFZ__Do" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+      
     </div>
   </section>
 
