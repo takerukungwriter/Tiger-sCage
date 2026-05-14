@@ -549,6 +549,39 @@
       cursor: not-allowed;
     }
 
+    .sos-share-section {
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .sos-share-btn {
+      flex: 1;
+      min-width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1rem;
+      border-radius: 2px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .sos-share-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .sos-share-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+    .sos-share-btn.fb  { background: #1877f2; color: #fff; }
+    .sos-share-btn.x   { background: #000; color: #fff; border: 1px solid #333; }
+    .sos-share-btn.native { background: rgba(201,168,76,0.15); border: 1px solid var(--gold-dim); color: var(--gold-light); }
+
     .submit-guide {
       margin-top: 2rem;
       padding: 1.2rem 1.5rem;
@@ -754,6 +787,21 @@
             ⬇ ดาวน์โหลดภาพ SOS
           </button>
         </div>
+        <div class="sos-share-section" id="shareSection">
+          <a id="fbShareBtn" class="sos-share-btn fb" href="#" target="_blank" rel="noopener" aria-disabled="true"
+            style="pointer-events:none; opacity:0.3;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+            แชร์ Facebook
+          </a>
+          <a id="xShareBtn" class="sos-share-btn x" href="#" target="_blank" rel="noopener" aria-disabled="true"
+            style="pointer-events:none; opacity:0.3;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            แชร์ X
+          </a>
+          <button id="nativeShareBtn" class="sos-share-btn native" disabled onclick="nativeShare()" style="display:none;">
+            &#8679; แชร์ภาพ
+          </button>
+        </div>
         <div class="submit-guide">
           <p>
             หลังดาวน์โหลดแล้ว ให้ไปคอมเมนต์ภาพในบท <strong>"กิจกรรมส่ง SOS ให้โลกรู้ ลุ้น Ebook ฟรี 3 รางวัล"</strong><br />
@@ -800,6 +848,45 @@
     const canvas = document.getElementById('sosCanvas');
     const ctx = canvas.getContext('2d');
     const downloadBtn = document.getElementById('downloadBtn');
+
+    const ACTIVITY_URL = 'https://www.readawrite.com/a/521c328081bcfc3733191ac52cf2480b';
+    const fbShareBtn     = document.getElementById('fbShareBtn');
+    const xShareBtn      = document.getElementById('xShareBtn');
+    const nativeShareBtn = document.getElementById('nativeShareBtn');
+
+    if (navigator.canShare) nativeShareBtn.style.display = 'flex';
+
+    function enableShareButtons(enable) {
+      const shareText = encodeURIComponent('ส่ง SOS ให้โลกรู้ 🏝️ ร่วมกิจกรรมลุ้น Ebook ฟรีกับนิยาย พยัคฆ์กรงวานร #พยัคฆ์กรงวานร');
+      const encodedURL = encodeURIComponent(ACTIVITY_URL);
+      if (enable) {
+        fbShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}&hashtag=%23%E0%B8%9E%E0%B8%A2%E0%B8%B1%E0%B8%84%E0%B8%86%E0%B9%8C%E0%B8%81%E0%B8%A3%E0%B8%87%E0%B8%A7%E0%B8%B2%E0%B8%99%E0%B8%A3`;
+        fbShareBtn.style.pointerEvents = '';
+        fbShareBtn.style.opacity = '';
+        xShareBtn.href  = `https://x.com/intent/tweet?url=${encodedURL}&text=${shareText}`;
+        xShareBtn.style.pointerEvents = '';
+        xShareBtn.style.opacity = '';
+        nativeShareBtn.disabled = false;
+      } else {
+        fbShareBtn.href = '#';
+        fbShareBtn.style.pointerEvents = 'none';
+        fbShareBtn.style.opacity = '0.3';
+        xShareBtn.href  = '#';
+        xShareBtn.style.pointerEvents = 'none';
+        xShareBtn.style.opacity = '0.3';
+        nativeShareBtn.disabled = true;
+      }
+    }
+
+    async function nativeShare() {
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'SOS_TigersCage.png', { type: 'image/png' });
+        const payload = navigator.canShare({ files: [file] })
+          ? { files: [file], title: 'SOS พยัคฆ์กรงวานร', text: 'ส่ง SOS ให้โลกรู้ 🏝️ #พยัคฆ์กรงวานร', url: ACTIVITY_URL }
+          : { title: 'SOS พยัคฆ์กรงวานร', text: 'ส่ง SOS ให้โลกรู้ 🏝️ #พยัคฆ์กรงวานร', url: ACTIVITY_URL };
+        try { await navigator.share(payload); } catch (_) {}
+      }, 'image/png');
+    }
 
     canvas.addEventListener('click', () => {
       if (!downloadBtn.disabled) downloadCard();
@@ -866,6 +953,7 @@
       if (!text) {
         downloadBtn.disabled = true;
         canvasContainer.classList.remove('has-content');
+        enableShareButtons(false);
         return;
       }
 
@@ -907,6 +995,7 @@
 
       downloadBtn.disabled = false;
       canvasContainer.classList.add('has-content');
+      enableShareButtons(true);
     }
 
     function downloadCard() {
